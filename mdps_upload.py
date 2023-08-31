@@ -2,16 +2,28 @@ import pickle
 import streamlit as st
 import pdfplumber
 import re
+from streamlit_option_menu import option_menu
 
-# Load the saved models
+
+# loading the saved models
+
 diabetes_model = pickle.load(open('diabetes.sav', 'rb'))
 
-# Sidebar for navigation
+heart_disease_model = pickle.load(open('heartdisease_model.sav', 'rb'))
+
+parkinsons_model = pickle.load(open('parkinson_model.sav', 'rb'))
+
+
+# sidebar for navigation
 with st.sidebar:
-    selected = st.selectbox(
-        'Multiple Disease Prediction System',
-        ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction"]
-    )
+    
+    selected = option_menu('Multiple Disease Prediction System',
+                          
+                          ['Diabetes Prediction',
+                           'Heart Disease Prediction',
+                           'Parkinsons Prediction'],
+                          icons=['activity','heart','person'],
+                          default_index=0)
 
 # Function to extract value from the report content based on the keyword
 def extract_value(report_text, keyword):
@@ -91,29 +103,20 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
-
-# Load the saved models
-heart_disease_model = pickle.load(open('heartdisease_model.sav', 'rb'))
-
-# Function to extract value from the report content based on the keyword
-def extract_value(report_text, keyword):
-    pattern = re.compile(rf'{keyword}\s*:\s*([\d.]+)')
-    match = pattern.search(report_text)
-    if match:
-        return match.group(1)
-    return ''
-
+    
 # Heart Disease Prediction Page
-if selected == 'Heart Disease Prediction':
+if (selected == 'Heart Disease Prediction'):
+    
+    # page title
     st.title('Heart Disease Prediction using ML')
 
     # Allow the user to upload a PDF report
     uploaded_file = st.file_uploader("Upload a PDF report", type=["pdf"])
 
     # Initialize variables to store extracted values
-    extracted_values = {'age': '', 'sex': '', 'cp': '', 'trestbps': '',
-                        'chol': '', 'fbs': '', 'restecg': '', 'thalach': '',
-                        'exang': '', 'oldpeak': '', 'slope': '', 'ca': '', 'thal': ''}
+    extracted_values = {'Age': '', 'Sex': '', 'Cp': '', 'Trestbps': '',
+                        'Chol': '', 'Fbs': '', 'Restecg': '', 'Thalach': '',
+                        'Exang': '', 'Oldpeak': '', 'Slope': '', 'Ca': '', 'Thal': ''}
 
     if uploaded_file is not None:
         pdf_text = ""
@@ -121,19 +124,19 @@ if selected == 'Heart Disease Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            extracted_values['age'] = extract_value(pdf_text, 'Age')
-            extracted_values['sex'] = extract_value(pdf_text, 'Sex')
-            extracted_values['cp'] = extract_value(pdf_text, 'Chest Pain types')
-            extracted_values['trestbps'] = extract_value(pdf_text, 'Resting Blood Pressure')
-            extracted_values['chol'] = extract_value(pdf_text, 'Serum Cholestoral in mg/dl')
-            extracted_values['fbs'] = extract_value(pdf_text, 'Fasting Blood Sugar')
-            extracted_values['restecg'] = extract_value(pdf_text, 'Resting Electrocardiographic results')
-            extracted_values['thalach'] = extract_value(pdf_text, 'Maximum Heart Rate achieved')
-            extracted_values['exang'] = extract_value(pdf_text, 'Exercise Induced Angina')
-            extracted_values['oldpeak'] = extract_value(pdf_text, 'ST depression induced by exercise')
-            extracted_values['slope'] = extract_value(pdf_text, 'Slope of the peak exercise ST segment')
-            extracted_values['ca'] = extract_value(pdf_text, 'Major vessels colored by flourosopy')
-            extracted_values['thal'] = extract_value(pdf_text, 'thal:')
+            extracted_values['Age'] = extract_value(pdf_text, 'Age')
+            extracted_values['Sex'] = extract_value(pdf_text, 'Sex')
+            extracted_values['Cp'] = extract_value(pdf_text, 'Cp')
+            extracted_values['Trestbps'] = extract_value(pdf_text, 'Trestbps')
+            extracted_values['Chol'] = extract_value(pdf_text, 'Chol')
+            extracted_values['Fbs'] = extract_value(pdf_text, 'Fbs')
+            extracted_values['Restecg'] = extract_value(pdf_text, 'Restecg')
+            extracted_values['Thalach'] = extract_value(pdf_text, 'Thalach')
+            extracted_values['Exang'] = extract_value(pdf_text, 'Exang')
+            extracted_values['Oldpeak'] = extract_value(pdf_text, 'Oldpeak')
+            extracted_values['Slope'] = extract_value(pdf_text, 'Slope')
+            extracted_values['Ca'] = extract_value(pdf_text, 'Ca')
+            extracted_values['Thal'] = extract_value(pdf_text, 'Thal:')
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
@@ -141,51 +144,51 @@ if selected == 'Heart Disease Prediction':
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        age = st.text_input('Age', value=extracted_values['age'])
+        age = st.text_input('Age', value=extracted_values['Age'])
 
     with col2:
-        sex = st.text_input('Sex', value=extracted_values['sex'])
+        sex = st.text_input('Sex', value=extracted_values['Sex'])
 
     with col3:
-        cp = st.text_input('Chest Pain types', value=extracted_values['cp'])
+        cp = st.text_input('Chest Pain types', value=extracted_values['Cp'])
 
     with col1:
-        trestbps = st.text_input('Resting Blood Pressure', value=extracted_values['trestbps'])
+        trestbps = st.text_input('Resting Blood Pressure', value=extracted_values['Trestbps'])
 
     with col2:
-        chol = st.text_input('Serum Cholestoral in mg/dl', value=extracted_values['chol'])
+        chol = st.text_input('Serum Cholestoral in mg/dl', value=extracted_values['Chol'])
 
     with col3:
-        fbs = st.text_input('Fasting Blood Sugar', value=extracted_values['fbs'])
+        fbs = st.text_input('Fasting Blood Sugar', value=extracted_values['Fbs'])
 
     with col1:
-        restecg = st.text_input('Resting Electrocardiographic results', value=extracted_values['restecg'])
+        restecg = st.text_input('Resting Electrocardiographic results', value=extracted_values['Restecg'])
 
     with col2:
-        thalach = st.text_input('Maximum Heart Rate achieved', value=extracted_values['thalach'])
+        thalach = st.text_input('Maximum Heart Rate achieved', value=extracted_values['Thalach'])
 
     with col3:
-        exang = st.text_input('Exercise Induced Angina', value=extracted_values['exang'])
+        exang = st.text_input('Exercise Induced Angina', value=extracted_values['Exang'])
 
     with col1:
-        oldpeak = st.text_input('ST depression induced by exercise', value=extracted_values['oldpeak'])
+        oldpeak = st.text_input('ST depression induced by exercise', value=extracted_values['Oldpeak'])
 
     with col2:
-        slope = st.text_input('Slope of the peak exercise ST segment', value=extracted_values['slope'])
+        slope = st.text_input('Slope of the peak exercise ST segment', value=extracted_values['Slope'])
 
     with col3:
-        ca = st.text_input('Major vessels colored by flourosopy', value=extracted_values['ca'])
+        ca = st.text_input('Major vessels colored by flourosopy', value=extracted_values['Ca'])
 
     with col1:
-        thal = st.text_input('thal:', value=extracted_values['thal'])
+        thal = st.text_input('thal:', value=extracted_values['Thal'])
 
     # Code for Prediction
     heart_diagnosis = ''
 
     # Creating a button for Prediction
     if st.button('Heart Disease Test Result'):
-        heart_prediction = heart_disease_model.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach,
-                                                        exang, oldpeak, slope, ca, thal]])
+        heart_prediction = heart_disease_model.predict([[Age, Sex, Cp, Trestbps, Chol, Fbs, Restecg, Thalach,
+                                                        Exang, Oldpeak, Slope, Ca, Thal]])
 
         if heart_prediction[0] == 1:
             heart_diagnosis = 'The person is having heart disease'
