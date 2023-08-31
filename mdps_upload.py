@@ -187,7 +187,7 @@ if (selected == 'Heart Disease Prediction'):
         ca = st.text_input('Major vessels colored by flourosopy', value=extracted_values['Ca'])
 
     with col1:
-        thal = st.text_input('thal:', value=extracted_values['Thal'])
+        thal = st.text_input('Thal:', value=extracted_values['Thal'])
 
     # Code for Prediction
     heart_diagnosis = ''
