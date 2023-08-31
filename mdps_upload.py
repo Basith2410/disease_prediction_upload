@@ -54,7 +54,7 @@ if selected == 'Diabetes Prediction':
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        Pregnancies = st.text_input('Number of Pregnancies', value=extracted_values['Pregnancies'])
+        Pregnancies = st.text_input('Pregnancies', value=extracted_values['Pregnancies'])
 
     with col2:
         Glucose = st.text_input('Glucose Level', value=extracted_values['Glucose'])
@@ -91,4 +91,3 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
-
