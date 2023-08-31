@@ -5,13 +5,6 @@ Created on Thu Aug 31 17:07:03 2023
 @author: Mars
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 31 17:07:03 2023
-
-@author: Mars
-"""
-
 import pickle
 import streamlit as st
 import pdfplumber
