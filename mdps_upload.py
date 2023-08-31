@@ -29,6 +29,7 @@ if selected == 'Diabetes Prediction':
             for page in pdf.pages:
                 pdf_text += page.extract_text()
         extracted_values = re.findall(r'(\d+\.\d+)', pdf_text)
+        st.write("Extracted Values:", extracted_values)  # Debugging line
 
     # Getting the input data from the user
     col1, col2, col3 = st.columns(3)
