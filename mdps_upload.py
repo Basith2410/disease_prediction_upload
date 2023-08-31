@@ -30,13 +30,14 @@ if selected == 'Diabetes Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            extracted_values_list = re.findall(r'(\d+\.\d+)', pdf_text)
+            extracted_values_list = re.findall(r'([^:]+)\s*:\s*([\d.]+)', pdf_text)
             st.write("Extracted Values:", extracted_values_list)  # Debugging line
 
             # Match extracted values to input fields
-            for idx, key in enumerate(extracted_values.keys()):
-                if idx < len(extracted_values_list):
-                    extracted_values[key] = extracted_values_list[idx]
+            for key, value in extracted_values_list:
+                key = key.strip()
+                if key in extracted_values:
+                    extracted_values[key] = value
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
@@ -44,10 +45,10 @@ if selected == 'Diabetes Prediction':
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        Pregnancies = st.text_input('Pregnancies', value=extracted_values['Pregnancies'])
+        Pregnancies = st.text_input('Number of Pregnancies', value=extracted_values['Pregnancies'])
 
     with col2:
-        Glucose = st.text_input('Glucose', value=extracted_values['Glucose'])
+        Glucose = st.text_input('Glucose Level', value=extracted_values['Glucose'])
 
     with col3:
         BloodPressure = st.text_input('Blood Pressure', value=extracted_values['Blood Pressure'])
@@ -57,7 +58,7 @@ if selected == 'Diabetes Prediction':
         SkinThickness = st.text_input('Skin Thickness', value=extracted_values['Skin Thickness'])
 
     with col2:
-        Insulin = st.text_input('Insulin', value=extracted_values['Insulin'])
+        Insulin = st.text_input('Insulin Level', value=extracted_values['Insulin'])
 
     with col3:
         BMI = st.text_input('BMI', value=extracted_values['BMI'])
