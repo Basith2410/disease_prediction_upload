@@ -24,15 +24,15 @@ if selected == 'Diabetes Prediction':
     extracted_values = [''] * 8
 
     if uploaded_file is not None:
-    pdf_text = ""
-    try:
-        with pdfplumber.load(uploaded_file) as pdf:
-            for page in pdf.pages:
-                pdf_text += page.extract_text()
-        extracted_values = re.findall(r'(\d+\.\d+)', pdf_text)
-        st.write("Extracted Values:", extracted_values)  # Debugging line
-    except Exception as e:
-        st.error(f"Error during PDF extraction: {e}")
+        pdf_text = ""
+        try:
+            with pdfplumber.load(uploaded_file) as pdf:
+                for page in pdf.pages:
+                    pdf_text += page.extract_text()
+            extracted_values = re.findall(r'(\d+\.\d+)', pdf_text)
+            st.write("Extracted Values:", extracted_values)  # Debugging line
+        except Exception as e:
+            st.error(f"Error during PDF extraction: {e}")
 
     # Getting the input data from the user
     col1, col2, col3 = st.columns(3)
