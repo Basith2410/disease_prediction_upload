@@ -13,16 +13,13 @@ with st.sidebar:
         ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction"]
     )
 
-# Function to extract values from the report content
-def extract_values(report_text):
-    extracted_values = {'Pregnancies': '', 'Glucose': '', 'BloodPressure': '', 'SkinThickness': '',
-                        'Insulin': '', 'BMI': '', 'DiabetesPedigreeFunction': '', 'Age': ''}
-    matches = re.findall(r'([A-Za-z\s]+)\s*:\s*([\d.]+|\s*)', report_text)
-    for key, value in matches:
-        key = key.strip()
-        if key in extracted_values:
-            extracted_values[key] = value.strip()
-    return extracted_values
+# Function to extract value from the report content based on the keyword
+def extract_value(report_text, keyword):
+    pattern = re.compile(rf'{keyword}\s*:\s*([\d.]+)')
+    match = pattern.search(report_text)
+    if match:
+        return match.group(1)
+    return ''
 
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
@@ -41,12 +38,15 @@ if selected == 'Diabetes Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            start_idx = pdf_text.find("Diabetes Test")
-            end_idx = pdf_text.find("Age :")
-            if start_idx != -1 and end_idx != -1:
-                extracted_section = pdf_text[start_idx:end_idx]
-                extracted_values = extract_values(extracted_section)
-                st.write("Extracted Values:", extracted_values)  # Debugging line
+            extracted_values['Pregnancies'] = extract_value(pdf_text, 'Pregnancies')
+            extracted_values['Glucose'] = extract_value(pdf_text, 'Glucose')
+            extracted_values['BloodPressure'] = extract_value(pdf_text, 'BloodPressure')
+            extracted_values['SkinThickness'] = extract_value(pdf_text, 'SkinThickness')
+            extracted_values['Insulin'] = extract_value(pdf_text, 'Insulin')
+            extracted_values['BMI'] = extract_value(pdf_text, 'BMI')
+            extracted_values['DiabetesPedigreeFunction'] = extract_value(pdf_text, 'DiabetesPedigreeFunction')
+            extracted_values['Age'] = extract_value(pdf_text, 'Age')
+            st.write("Extracted Values:", extracted_values)  # Debugging line
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
