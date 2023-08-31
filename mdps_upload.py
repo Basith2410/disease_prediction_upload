@@ -92,20 +92,8 @@ if selected == 'Diabetes Prediction':
 
     st.success(diab_diagnosis)
 
-import pickle
-import streamlit as st
-import pdfplumber
-import re
-
 # Load the saved models
 heart_disease_model = pickle.load(open('heartdisease_model.sav', 'rb'))
-
-# Sidebar for navigation
-with st.sidebar:
-    selected = st.selectbox(
-        'Multiple Disease Prediction System',
-        ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction"]
-    )
 
 # Function to extract value from the report content based on the keyword
 def extract_value(report_text, keyword):
