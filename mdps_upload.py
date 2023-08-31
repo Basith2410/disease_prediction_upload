@@ -40,7 +40,26 @@ if selected == 'Diabetes Prediction':
     with col1:
         Pregnancies = st.text_input('Number of Pregnancies', value=extracted_values[0])
 
-    # Rest of the code follows...
+    with col2:
+        Glucose = st.text_input('Glucose Level', value=extracted_values[1])
+
+    with col3:
+        BloodPressure = st.text_input('Blood Pressure', value=extracted_values[2])
+
+    with col1:
+        SkinThickness = st.text_input('Skin Thickness', value=extracted_values[3])
+
+    with col2:
+        Insulin = st.text_input('Insulin', value=extracted_values[4])
+
+    with col3:
+        BMI = st.text_input('BMI', value=extracted_values[5])
+
+    with col1:
+        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function', value=extracted_values[6])
+
+    with col2:
+        Age = st.text_input('Age', value=extracted_values[7])
 
     # Code for Prediction
     diab_diagnosis = ''
@@ -55,4 +74,5 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
+
 
