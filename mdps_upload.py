@@ -21,7 +21,8 @@ if selected == 'Diabetes Prediction':
     uploaded_file = st.file_uploader("Upload a PDF report", type=["pdf"])
 
     # Initialize variables to store extracted values
-    extracted_values = [''] * 8
+    extracted_values = {'Pregnancies': '', 'Glucose': '', 'Blood Pressure': '', 'Skin Thickness': '',
+                        'Insulin': '', 'BMI': '', 'Diabetes Pedigree Function': '', 'Age': ''}
 
     if uploaded_file is not None:
         pdf_text = ""
@@ -29,27 +30,43 @@ if selected == 'Diabetes Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            extracted_values = re.findall(r'(\d+\.\d+)', pdf_text)
-            st.write("Extracted Values:", extracted_values)  # Debugging line
+            extracted_values_list = re.findall(r'(\d+\.\d+)', pdf_text)
+            st.write("Extracted Values:", extracted_values_list)  # Debugging line
+
+            # Match extracted values to input fields
+            for idx, key in enumerate(extracted_values.keys()):
+                if idx < len(extracted_values_list):
+                    extracted_values[key] = extracted_values_list[idx]
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
-
-    # Ensure that we have at least 8 extracted values
-    extracted_values += [''] * max(0, 8 - len(extracted_values))
 
     # Getting the input data from the user
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        Pregnancies = st.text_input('Number of Pregnancies', value=extracted_values[0])
+        Pregnancies = st.text_input('Pregnancies', value=extracted_values['Pregnancies'])
 
     with col2:
-        Glucose = st.text_input('Glucose Level', value=extracted_values[1])
+        Glucose = st.text_input('Glucose', value=extracted_values['Glucose'])
 
     with col3:
-        BloodPressure = st.text_input('Blood Pressure', value=extracted_values[2])
+        BloodPressure = st.text_input('Blood Pressure', value=extracted_values['Blood Pressure'])
 
-    # Add input fields for the remaining columns here
+    # Add input fields for the remaining columns
+    with col1:
+        SkinThickness = st.text_input('Skin Thickness', value=extracted_values['Skin Thickness'])
+
+    with col2:
+        Insulin = st.text_input('Insulin', value=extracted_values['Insulin'])
+
+    with col3:
+        BMI = st.text_input('BMI', value=extracted_values['BMI'])
+
+    with col1:
+        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function', value=extracted_values['Diabetes Pedigree Function'])
+
+    with col2:
+        Age = st.text_input('Age of the Person', value=extracted_values['Age'])
 
     # Code for Prediction
     diab_diagnosis = ''
@@ -64,4 +81,3 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
-
