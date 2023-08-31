@@ -46,7 +46,7 @@ if selected == 'Diabetes Prediction':
             extracted_values['BMI'] = extract_value(pdf_text, 'BMI')
             extracted_values['DiabetesPedigreeFunction'] = extract_value(pdf_text, 'DiabetesPedigreeFunction')
             extracted_values['Age'] = extract_value(pdf_text, 'Age')
-            st.write("Extracted Values:", extracted_values)  # Debugging line
+            #st.write("Extracted Values:", extracted_values)  # Debugging line
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
