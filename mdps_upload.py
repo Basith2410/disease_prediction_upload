@@ -5,6 +5,13 @@ Created on Thu Aug 31 17:07:03 2023
 @author: Mars
 """
 
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Aug 31 17:07:03 2023
+
+@author: Mars
+"""
+
 import pickle
 import streamlit as st
 import pdfplumber
@@ -203,3 +210,144 @@ if (selected == 'Heart Disease Prediction'):
             heart_diagnosis = 'The person does not have any heart disease'
 
     st.success(heart_diagnosis)
+
+
+# Parkinson's Disease Prediction Page
+if selected == "Parkinson's Prediction":
+    st.title("Parkinson's Disease Prediction using ML")
+
+    # Allow the user to upload a PDF report
+    uploaded_file = st.file_uploader("Upload a PDF report", type=["pdf"])
+
+    # Initialize variables to store extracted values
+    extracted_values = {"MDVP:Fo(Hz)": "", "MDVP:Fhi(Hz)": "", "MDVP:Flo(Hz)": "", "MDVP:Jitter(%)": "",
+                        "MDVP:Jitter(Abs)": "", "MDVP:RAP": "", "MDVP:PPQ": "", "Jitter:DDP": "",
+                        "MDVP:Shimmer": "", "MDVP:Shimmer(dB)": "", "Shimmer:APQ3": "", "Shimmer:APQ5": "",
+                        "MDVP:APQ": "", "Shimmer:DDA": "", "NHR": "", "HNR": "", "RPDE": "",
+                        "DFA": "", "spread1": "", "spread2": "", "D2": "", "PPE": ""}
+
+    if uploaded_file is not None:
+        pdf_text = ""
+        try:
+            with pdfplumber.open(uploaded_file) as pdf:
+                for page in pdf.pages:
+                    pdf_text += page.extract_text()
+            extracted_values["MDVP:Fo(Hz)"] = extract_value(pdf_text, "MDVP:Fo(Hz)")
+            extracted_values["MDVP:Fhi(Hz)"] = extract_value(pdf_text, "MDVP:Fhi(Hz)")
+            extracted_values["MDVP:Flo(Hz)"] = extract_value(pdf_text, "MDVP:Flo(Hz)")
+            extracted_values["MDVP:Jitter(%)"] = extract_value(pdf_text, "MDVP:Jitter(%)")
+            extracted_values["MDVP:Jitter(Abs)"] = extract_value(pdf_text, "MDVP:Jitter(Abs)")
+            extracted_values["MDVP:RAP"] = extract_value(pdf_text, "MDVP:RAP")
+            extracted_values["MDVP:PPQ"] = extract_value(pdf_text, "MDVP:PPQ")
+            extracted_values["Jitter:DDP"] = extract_value(pdf_text, "Jitter:DDP")
+            extracted_values["MDVP:Shimmer"] = extract_value(pdf_text, "MDVP:Shimmer")
+            extracted_values["MDVP:Shimmer(dB)"] = extract_value(pdf_text, "MDVP:Shimmer(dB)")
+            extracted_values["Shimmer:APQ3"] = extract_value(pdf_text, "Shimmer:APQ3")
+            extracted_values["Shimmer:APQ5"] = extract_value(pdf_text, "Shimmer:APQ5")
+            extracted_values["MDVP:APQ"] = extract_value(pdf_text, "MDVP:APQ")
+            extracted_values["Shimmer:DDA"] = extract_value(pdf_text, "Shimmer:DDA")
+            extracted_values["NHR"] = extract_value(pdf_text, "NHR")
+            extracted_values["HNR"] = extract_value(pdf_text, "HNR")
+            extracted_values["RPDE"] = extract_value(pdf_text, "RPDE")
+            extracted_values["DFA"] = extract_value(pdf_text, "DFA")
+            extracted_values["spread1"] = extract_value(pdf_text, "spread1")
+            extracted_values["spread2"] = extract_value(pdf_text, "spread2")
+            extracted_values["D2"] = extract_value(pdf_text, "D2")
+            extracted_values["PPE"] = extract_value(pdf_text, "PPE")
+
+        except Exception as e:
+            st.error(f"Error during PDF extraction: {e}")
+
+    # Getting the input data from the user
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        mdvp_fo = st.text_input("MDVP:Fo(Hz)", value=extracted_values["MDVP:Fo(Hz)"])
+
+    with col2:
+        mdvp_fhi = st.text_input("MDVP:Fhi(Hz)", value=extracted_values["MDVP:Fhi(Hz)"])
+
+    with col3:
+        mdvp_flo = st.text_input("MDVP:Flo(Hz)", value=extracted_values["MDVP:Flo(Hz)"])
+
+    # Add input fields for the remaining features
+    with col1:
+        mdvp_jitter_percent = st.text_input("MDVP:Jitter(%)", value=extracted_values["MDVP:Jitter(%)"])
+
+    with col2:
+        mdvp_jitter_abs = st.text_input("MDVP:Jitter(Abs)", value=extracted_values["MDVP:Jitter(Abs)"])
+
+    with col3:
+        mdvp_rap = st.text_input("MDVP:RAP", value=extracted_values["MDVP:RAP"])
+
+    # Add input fields for the remaining features
+    with col1:
+        mdvp_ppq = st.text_input("MDVP:PPQ", value=extracted_values["MDVP:PPQ"])
+
+    with col2:
+        jitter_ddp = st.text_input("Jitter:DDP", value=extracted_values["Jitter:DDP"])
+
+    with col3:
+        mdvp_shimmer = st.text_input("MDVP:Shimmer", value=extracted_values["MDVP:Shimmer"])
+
+    # Continue adding input fields for the remaining features
+    with col1:
+        mdvp_shimmer_db = st.text_input("MDVP:Shimmer(dB)", value=extracted_values["MDVP:Shimmer(dB)"])
+
+    with col2:
+        shimmer_apq3 = st.text_input("Shimmer:APQ3", value=extracted_values["Shimmer:APQ3"])
+
+    with col3:
+        shimmer_apq5 = st.text_input("Shimmer:APQ5", value=extracted_values["Shimmer:APQ5"])
+        
+    with col1:
+        mdvp_apq = st.text_input("MDVP:APQ", value=extracted_values["MDVP:APQ"])
+
+    with col2:
+        shimmer_dda = st.text_input("Shimmer:DDA", value=extracted_values["Shimmer:DDA"])
+
+    with col3:
+        nhr = st.text_input("NHR", value=extracted_values["NHR"])
+
+    # Continue adding input fields for the remaining features
+    with col1:
+        hnr = st.text_input("HNR", value=extracted_values["HNR"])
+
+    with col2:
+        rpde = st.text_input("RPDE", value=extracted_values["RPDE"])
+
+    with col3:
+        dfa = st.text_input("DFA", value=extracted_values["DFA"])
+
+    # Continue adding input fields for the remaining features
+    with col1:
+        spread1 = st.text_input("spread1", value=extracted_values["spread1"])
+
+    with col2:
+        spread2 = st.text_input("spread2", value=extracted_values["spread2"])
+
+    with col3:
+        d2 = st.text_input("D2", value=extracted_values["D2"])
+
+    # Continue adding input fields for the remaining features
+    with col1:
+        ppe = st.text_input("PPE", value=extracted_values["PPE"])
+
+
+    # Code for Prediction
+    parkinsons_diagnosis = ""
+
+    if st.button('Parkinsons Test Result'):
+        parkinson_prediction = parkinsons_model.predict([[mdvp_fo, mdvp_fhi, mdvp_flo, mdvp_jitter_percent,
+                                                          mdvp_jitter_abs, mdvp_rap, mdvp_ppq, jitter_ddp,
+                                                          mdvp_shimmer, mdvp_shimmer_db, shimmer_apq3,
+                                                          shimmer_apq5, mdvp_apq, shimmer_dda, nhr, hnr,
+                                                          rpde, dfa, spread1, spread2, d2, ppe]])
+
+        if parkinson_prediction[0] == 1:
+            parkinson_diagnosis = 'The person has Parkinsons disease'
+        else:
+            parkinson_diagnosis = 'The person does not have Parkinsons disease'
+
+    st.success(parkinson_diagnosis)
+
