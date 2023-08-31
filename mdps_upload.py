@@ -126,14 +126,14 @@ if selected == 'Heart Disease Prediction':
             extracted_values['cp'] = extract_value(pdf_text, 'Chest Pain types')
             extracted_values['trestbps'] = extract_value(pdf_text, 'Resting Blood Pressure')
             extracted_values['chol'] = extract_value(pdf_text, 'Serum Cholestoral in mg/dl')
-            extracted_values['fbs'] = extract_value(pdf_text, 'Fasting Blood Sugar > 120 mg/dl')
+            extracted_values['fbs'] = extract_value(pdf_text, 'Fasting Blood Sugar')
             extracted_values['restecg'] = extract_value(pdf_text, 'Resting Electrocardiographic results')
             extracted_values['thalach'] = extract_value(pdf_text, 'Maximum Heart Rate achieved')
             extracted_values['exang'] = extract_value(pdf_text, 'Exercise Induced Angina')
             extracted_values['oldpeak'] = extract_value(pdf_text, 'ST depression induced by exercise')
             extracted_values['slope'] = extract_value(pdf_text, 'Slope of the peak exercise ST segment')
             extracted_values['ca'] = extract_value(pdf_text, 'Major vessels colored by flourosopy')
-            extracted_values['thal'] = extract_value(pdf_text, 'thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
+            extracted_values['thal'] = extract_value(pdf_text, 'thal:')
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
@@ -149,7 +149,6 @@ if selected == 'Heart Disease Prediction':
     with col3:
         cp = st.text_input('Chest Pain types', value=extracted_values['cp'])
 
-    # Add input fields for the remaining columns
     with col1:
         trestbps = st.text_input('Resting Blood Pressure', value=extracted_values['trestbps'])
 
@@ -157,7 +156,7 @@ if selected == 'Heart Disease Prediction':
         chol = st.text_input('Serum Cholestoral in mg/dl', value=extracted_values['chol'])
 
     with col3:
-        fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl', value=extracted_values['fbs'])
+        fbs = st.text_input('Fasting Blood Sugar', value=extracted_values['fbs'])
 
     with col1:
         restecg = st.text_input('Resting Electrocardiographic results', value=extracted_values['restecg'])
@@ -178,7 +177,7 @@ if selected == 'Heart Disease Prediction':
         ca = st.text_input('Major vessels colored by flourosopy', value=extracted_values['ca'])
 
     with col1:
-        thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect', value=extracted_values['thal'])
+        thal = st.text_input('thal:', value=extracted_values['thal'])
 
     # Code for Prediction
     heart_diagnosis = ''
