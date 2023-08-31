@@ -92,6 +92,21 @@ if selected == 'Diabetes Prediction':
 
     st.success(diab_diagnosis)
 
+import pickle
+import streamlit as st
+import pdfplumber
+import re
+
+# Load the saved models
+heart_disease_model = pickle.load(open('heartdisease_model.sav', 'rb'))
+
+# Sidebar for navigation
+with st.sidebar:
+    selected = st.selectbox(
+        'Multiple Disease Prediction System',
+        ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction"]
+    )
+
 # Function to extract value from the report content based on the keyword
 def extract_value(report_text, keyword):
     pattern = re.compile(rf'{keyword}\s*:\s*([\d.]+)')
@@ -118,20 +133,19 @@ if selected == 'Heart Disease Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            extracted_values['age'] = extract_value(pdf_text, 'age')
-            extracted_values['sex'] = extract_value(pdf_text, 'sex')
-            extracted_values['cp'] = extract_value(pdf_text, 'cp')
-            extracted_values['trestbps'] = extract_value(pdf_text, 'trestbps')
-            extracted_values['chol'] = extract_value(pdf_text, 'chol')
-            extracted_values['fbs'] = extract_value(pdf_text, 'fbs')
-            extracted_values['restecg'] = extract_value(pdf_text, 'restecg')
-            extracted_values['thalach'] = extract_value(pdf_text, 'thalach')
-            extracted_values['exang'] = extract_value(pdf_text, 'exang')
-            extracted_values['oldpeak'] = extract_value(pdf_text, 'oldpeak')
-            extracted_values['slope'] = extract_value(pdf_text, 'slope')
-            extracted_values['ca'] = extract_value(pdf_text, 'ca')
-            extracted_values['thal'] = extract_value(pdf_text, 'thal')
-            # st.write("Extracted Values:", extracted_values)  # Commented out this line
+            extracted_values['age'] = extract_value(pdf_text, 'Age')
+            extracted_values['sex'] = extract_value(pdf_text, 'Sex')
+            extracted_values['cp'] = extract_value(pdf_text, 'Chest Pain types')
+            extracted_values['trestbps'] = extract_value(pdf_text, 'Resting Blood Pressure')
+            extracted_values['chol'] = extract_value(pdf_text, 'Serum Cholestoral in mg/dl')
+            extracted_values['fbs'] = extract_value(pdf_text, 'Fasting Blood Sugar > 120 mg/dl')
+            extracted_values['restecg'] = extract_value(pdf_text, 'Resting Electrocardiographic results')
+            extracted_values['thalach'] = extract_value(pdf_text, 'Maximum Heart Rate achieved')
+            extracted_values['exang'] = extract_value(pdf_text, 'Exercise Induced Angina')
+            extracted_values['oldpeak'] = extract_value(pdf_text, 'ST depression induced by exercise')
+            extracted_values['slope'] = extract_value(pdf_text, 'Slope of the peak exercise ST segment')
+            extracted_values['ca'] = extract_value(pdf_text, 'Major vessels colored by flourosopy')
+            extracted_values['thal'] = extract_value(pdf_text, 'thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
