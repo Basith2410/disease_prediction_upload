@@ -13,6 +13,15 @@ with st.sidebar:
         ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction"]
     )
 
+# Function to extract values from the report content
+def extract_values(report_text):
+    extracted_values = {}
+    matches = re.findall(r'([A-Za-z\s]+)\s*:\s*([\d.]+)', report_text)
+    for key, value in matches:
+        key = key.strip()
+        extracted_values[key] = value
+    return extracted_values
+
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction using ML')
@@ -21,8 +30,8 @@ if selected == 'Diabetes Prediction':
     uploaded_file = st.file_uploader("Upload a PDF report", type=["pdf"])
 
     # Initialize variables to store extracted values
-    extracted_values = {'Pregnancies': '', 'Glucose': '', 'Blood Pressure': '', 'Skin Thickness': '',
-                        'Insulin': '', 'BMI': '', 'Diabetes Pedigree Function': '', 'Age': ''}
+    extracted_values = {'Pregnancies': '', 'Glucose': '', 'BloodPressure': '', 'SkinThickness': '',
+                        'Insulin': '', 'BMI': '', 'DiabetesPedigreeFunction': '', 'Age': ''}
 
     if uploaded_file is not None:
         pdf_text = ""
@@ -30,14 +39,12 @@ if selected == 'Diabetes Prediction':
             with pdfplumber.open(uploaded_file) as pdf:
                 for page in pdf.pages:
                     pdf_text += page.extract_text()
-            extracted_values_list = re.findall(r'([^:]+)\s*:\s*([\d.]+)', pdf_text)
-            st.write("Extracted Values:", extracted_values_list)  # Debugging line
-
-            # Match extracted values to input fields
-            for key, value in extracted_values_list:
-                key = key.strip()
-                if key in extracted_values:
-                    extracted_values[key] = value
+            start_idx = pdf_text.find("Diabetes Test")
+            end_idx = pdf_text.find("Age :")
+            if start_idx != -1 and end_idx != -1:
+                extracted_section = pdf_text[start_idx:end_idx]
+                extracted_values = extract_values(extracted_section)
+                st.write("Extracted Values:", extracted_values)  # Debugging line
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
@@ -51,11 +58,11 @@ if selected == 'Diabetes Prediction':
         Glucose = st.text_input('Glucose Level', value=extracted_values['Glucose'])
 
     with col3:
-        BloodPressure = st.text_input('Blood Pressure', value=extracted_values['Blood Pressure'])
+        BloodPressure = st.text_input('Blood Pressure', value=extracted_values['BloodPressure'])
 
     # Add input fields for the remaining columns
     with col1:
-        SkinThickness = st.text_input('Skin Thickness', value=extracted_values['Skin Thickness'])
+        SkinThickness = st.text_input('Skin Thickness', value=extracted_values['SkinThickness'])
 
     with col2:
         Insulin = st.text_input('Insulin Level', value=extracted_values['Insulin'])
@@ -64,7 +71,7 @@ if selected == 'Diabetes Prediction':
         BMI = st.text_input('BMI', value=extracted_values['BMI'])
 
     with col1:
-        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function', value=extracted_values['Diabetes Pedigree Function'])
+        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function', value=extracted_values['DiabetesPedigreeFunction'])
 
     with col2:
         Age = st.text_input('Age of the Person', value=extracted_values['Age'])
@@ -82,3 +89,4 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
+
