@@ -195,7 +195,7 @@ if (selected == 'Heart Disease Prediction'):
     # Creating a button for Prediction
     if st.button('Heart Disease Test Result'):
         heart_prediction = heart_disease_model.predict([[Age, Sex, Cp, Trestbps, Chol, Fbs, Restecg, Thalach,
-                                                        Exang, Oldpeak, Slope, Ca, Thal]])
+                                                        Exang, Oldpeak, Slope, Ca, thal]])
 
         if heart_prediction[0] == 1:
             heart_diagnosis = 'The person is having heart disease'
