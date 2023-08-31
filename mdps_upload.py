@@ -17,11 +17,11 @@ with st.sidebar:
 def extract_values(report_text):
     extracted_values = {'Pregnancies': '', 'Glucose': '', 'BloodPressure': '', 'SkinThickness': '',
                         'Insulin': '', 'BMI': '', 'DiabetesPedigreeFunction': '', 'Age': ''}
-    matches = re.findall(r'([A-Za-z\s]+)\s*:\s*([\d.]+)', report_text)
+    matches = re.findall(r'([A-Za-z\s]+)\s*:\s*([\d.]+|\s*)', report_text)
     for key, value in matches:
         key = key.strip()
         if key in extracted_values:
-            extracted_values[key] = value
+            extracted_values[key] = value.strip()
     return extracted_values
 
 # Diabetes Prediction Page
@@ -91,4 +91,3 @@ if selected == 'Diabetes Prediction':
             diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
-
