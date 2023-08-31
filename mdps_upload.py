@@ -3,10 +3,10 @@ import streamlit as st
 import pdfplumber
 import re
 
-# loading the saved models
+# Load the saved models
 diabetes_model = pickle.load(open('diabetes.sav', 'rb'))
 
-# sidebar for navigation
+# Sidebar for navigation
 with st.sidebar:
     selected = st.selectbox(
         'Multiple Disease Prediction System',
@@ -62,8 +62,7 @@ if selected == 'Diabetes Prediction':
 
     # Creating a button for Prediction
     if st.button('Diabetes Test Result'):
-        diab_prediction = diabetes_model.predict(
-            [[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
+        diab_prediction = diabetes_model.predict([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
 
         if diab_prediction[0] == 1:
             diab_diagnosis = 'The person is diabetic'
