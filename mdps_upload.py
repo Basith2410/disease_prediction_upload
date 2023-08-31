@@ -15,11 +15,13 @@ with st.sidebar:
 
 # Function to extract values from the report content
 def extract_values(report_text):
-    extracted_values = {}
+    extracted_values = {'Pregnancies': '', 'Glucose': '', 'BloodPressure': '', 'SkinThickness': '',
+                        'Insulin': '', 'BMI': '', 'DiabetesPedigreeFunction': '', 'Age': ''}
     matches = re.findall(r'([A-Za-z\s]+)\s*:\s*([\d.]+)', report_text)
     for key, value in matches:
         key = key.strip()
-        extracted_values[key] = value
+        if key in extracted_values:
+            extracted_values[key] = value
     return extracted_values
 
 # Diabetes Prediction Page
