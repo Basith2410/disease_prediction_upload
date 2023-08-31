@@ -123,7 +123,7 @@ if (selected == 'Heart Disease Prediction'):
     # Initialize variables to store extracted values
     extracted_values = {'Age': '', 'Sex': '', 'Cp': '', 'Trestbps': '',
                         'Chol': '', 'Fbs': '', 'Restecg': '', 'Thalach': '',
-                        'Exang': '', 'Oldpeak': '', 'Slope': '', 'Ca': '', 'thal': ''}
+                        'Exang': '', 'Oldpeak': '', 'Slope': '', 'Ca': '', 'Thal': ''}
 
     if uploaded_file is not None:
         pdf_text = ""
@@ -143,7 +143,7 @@ if (selected == 'Heart Disease Prediction'):
             extracted_values['Oldpeak'] = extract_value(pdf_text, 'Oldpeak')
             extracted_values['Slope'] = extract_value(pdf_text, 'Slope')
             extracted_values['Ca'] = extract_value(pdf_text, 'Ca')
-            extracted_values['thal'] = extract_value(pdf_text, 'thal:')
+            extracted_values['Thal'] = extract_value(pdf_text, 'Thal:')
         except Exception as e:
             st.error(f"Error during PDF extraction: {e}")
 
@@ -187,7 +187,7 @@ if (selected == 'Heart Disease Prediction'):
         ca = st.text_input('Major vessels colored by flourosopy', value=extracted_values['Ca'])
 
     with col1:
-        thal = st.text_input('thal:', value=extracted_values['thal'])
+        thal = st.text_input('thal:', value=extracted_values['Thal'])
 
     # Code for Prediction
     heart_diagnosis = ''
@@ -195,7 +195,7 @@ if (selected == 'Heart Disease Prediction'):
     # Creating a button for Prediction
     if st.button('Heart Disease Test Result'):
         heart_prediction = heart_disease_model.predict([[Age, Sex, Cp, Trestbps, Chol, Fbs, Restecg, Thalach,
-                                                        Exang, Oldpeak, Slope, Ca, thal]])
+                                                        Exang, Oldpeak, Slope, Ca, Thal]])
 
         if heart_prediction[0] == 1:
             heart_diagnosis = 'The person is having heart disease'
