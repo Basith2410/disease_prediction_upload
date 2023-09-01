@@ -206,7 +206,7 @@ if (selected == 'Heart Disease Prediction'):
 
 
 # Parkinson's Disease Prediction Page
-if selected == "Parkinson's Prediction":
+if selected == "Parkinsons Prediction":
     st.title("Parkinson's Disease Prediction using ML")
 
     # Allow the user to upload a PDF report
