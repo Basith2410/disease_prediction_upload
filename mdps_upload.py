@@ -331,11 +331,30 @@ if selected == "Parkinsons Prediction":
     parkinsons_diagnosis = ""
 
     if st.button('Parkinsons Test Result'):
-        parkinson_prediction = parkinsons_model.predict([[mdvp_fo, mdvp_fhi, mdvp_flo, mdvp_jitter_percent,
-                                                          mdvp_jitter_abs, mdvp_rap, mdvp_ppq, jitter_ddp,
-                                                          mdvp_shimmer, mdvp_shimmer_db, shimmer_apq3,
-                                                          shimmer_apq5, mdvp_apq, shimmer_dda, nhr, hnr,
-                                                          rpde, dfa, spread1, spread2, d2, ppe]])
+        parkinson_prediction = parkinsons_model.predict([[extracted_values["MDVP:Fo(Hz)"],
+                                                          extracted_values["MDVP:Fhi(Hz)"],
+                                                          extracted_values["MDVP:Flo(Hz)"],
+                                                          extracted_values["MDVP:Jitter(%)"],
+                                                          extracted_values["MDVP:Jitter(Abs)"],
+                                                          extracted_values["MDVP:RAP"],
+                                                          extracted_values["MDVP:PPQ"],
+                                                          extracted_values["Jitter:DDP"],
+                                                          extracted_values["MDVP:Shimmer"],
+                                                          extracted_values["MDVP:Shimmer(dB)"],
+                                                          extracted_values["Shimmer:APQ3"],
+                                                          extracted_values["Shimmer:APQ5"],
+                                                          extracted_values["MDVP:APQ"],
+                                                          extracted_values["Shimmer:DDA"],
+                                                          extracted_values["NHR"],
+                                                          extracted_values["HNR"],
+                                                          extracted_values["RPDE"],
+                                                          extracted_values["DFA"],
+                                                          extracted_values["spread1"],
+                                                          extracted_values["spread2"],
+                                                          extracted_values["D2"],
+                                                          extracted_values["PPE"]]])
+                                                      
+                        
 
         if parkinson_prediction[0] == 1:
             parkinson_diagnosis = 'The person has Parkinsons disease'
@@ -343,4 +362,3 @@ if selected == "Parkinsons Prediction":
             parkinson_diagnosis = 'The person does not have Parkinsons disease'
 
     st.success(parkinson_diagnosis)
-
