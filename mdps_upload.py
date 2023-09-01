@@ -361,4 +361,4 @@ if selected == "Parkinsons Prediction":
         else:
             parkinson_diagnosis = 'The person does not have Parkinsons disease'
 
-    st.success(parkinson_diagnosis)
+    st.success(parkinsons_diagnosis)
