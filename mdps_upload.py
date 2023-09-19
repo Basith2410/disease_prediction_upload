@@ -11,6 +11,47 @@ import pdfplumber
 import re
 from streamlit_option_menu import option_menu
 
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #f0f0f0; /* Change the background color */
+        color: #333; /* Change the text color */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Custom CSS for the title and sidebar
+st.markdown(
+    """
+    <style>
+    .stApp {
+        max-width: 1200px; /* Adjust the maximum width of the app */
+    }
+    .stSidebar {
+        background-color: #333; /* Change the sidebar background color */
+        color: #fff; /* Change the sidebar text color */
+    }
+    .stSidebar option {
+        background-color: #444; /* Change the sidebar dropdown background color */
+        color: #fff; /* Change the sidebar dropdown text color */
+    }
+    .st-hv .sidebar-content {
+        color: #fff; /* Change the active sidebar item text color */
+    }
+    .st-hv .sidebar-content::before {
+        background-color: #fff; /* Change the active sidebar item indicator color */
+    }
+    .css-17eq0hr option {
+        background-color: #fff; /* Change the dropdown menu background color */
+        color: #333; /* Change the dropdown menu text color */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # loading the saved models
 
